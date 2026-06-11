@@ -23,6 +23,7 @@ tasks {
 	shadowJar {
 		archiveClassifier = ""
 		archiveVersion = ""
+		minimize()
 	}
 
 	build {

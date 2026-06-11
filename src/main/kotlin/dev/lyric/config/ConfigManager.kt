@@ -15,24 +15,11 @@ class ConfigManager(private val plugin: JavaPlugin) {
 		sources[source.identifier] = source
 	}
 
-	fun get(identifier: String): ConfigSource? {
-		return sources[identifier]
-	}
-
 	fun loadAll() {
 		sources.values.forEach { source ->
 			when (source) {
 				is FileConfigSource<*> -> load(source)
 				is FolderConfigSource<*> -> load(source)
-			}
-		}
-	}
-
-	fun saveAll() {
-		sources.values.forEach { source ->
-			when (source) {
-				is FileConfigSource<*> -> save(source)
-				is FolderConfigSource<*> -> save(source)
 			}
 		}
 	}
@@ -77,6 +64,15 @@ class ConfigManager(private val plugin: JavaPlugin) {
 			}
 	}
 
+	fun saveAll() {
+		sources.values.forEach { source ->
+			when (source) {
+				is FileConfigSource<*> -> save(source)
+				is FolderConfigSource<*> -> save(source)
+			}
+		}
+	}
+
 	fun <T : Any> save(source: FileConfigSource<T>) {
 		val file = File(plugin.dataFolder, source.file.path)
 		file.parentFile?.mkdirs()
@@ -94,8 +90,26 @@ class ConfigManager(private val plugin: JavaPlugin) {
 		}
 	}
 
-	inline fun <reified T : ConfigSource> get(identifier: String): T? {
-		return get(identifier) as? T
+	fun get(identifier: String): ConfigSource? {
+		return sources[identifier]
+	}
+
+	inline fun <reified T : Any> getFile(identifier: String): T? {
+		return (get(identifier) as? FileConfigSource<*>)?.data as? T
+	}
+
+	inline fun <reified T : ConfigSource> getFolder(identifier: String, child: String): T? {
+		return (get(identifier) as? FolderConfigSource<*>)?.getChild(child) as? T
+	}
+
+	@Suppress("UNCHECKED_CAST")
+	inline fun <reified T : Any> getFolderSource(identifier: String): FolderConfigSource<T>? {
+		return get(identifier) as? FolderConfigSource<T>
+	}
+
+	@Suppress("UNCHECKED_CAST")
+	inline fun <reified T : Any> getFileSource(identifier: String): FileConfigSource<T>? {
+		return get(identifier) as? FileConfigSource<T>
 	}
 
 
