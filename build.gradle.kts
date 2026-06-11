@@ -2,6 +2,7 @@ plugins {
 	kotlin("jvm") version "2.4.0"
 	kotlin("plugin.serialization") version "2.3.21"
 	id("com.gradleup.shadow") version "9.4.2"
+	`maven-publish`
 }
 
 repositories {
@@ -16,6 +17,10 @@ dependencies {
 
 kotlin {
 	jvmToolchain(21)
+}
+
+java {
+	withSourcesJar()
 }
 
 tasks {
