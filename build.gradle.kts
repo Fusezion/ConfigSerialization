@@ -1,3 +1,5 @@
+import org.gradle.internal.execution.caching.CachingState.enabled
+
 plugins {
 	kotlin("jvm") version "2.4.0"
 	kotlin("plugin.serialization") version "2.4.0"
@@ -41,4 +43,13 @@ tasks {
 		enabled = false
 	}
 
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			artifact(tasks.shadowJar.get())
+			artifact(tasks.named("sourcesJar"))
+		}
+	}
 }
