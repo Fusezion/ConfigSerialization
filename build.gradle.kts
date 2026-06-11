@@ -1,9 +1,12 @@
 plugins {
 	kotlin("jvm") version "2.4.0"
-	kotlin("plugin.serialization") version "2.3.21"
+	kotlin("plugin.serialization") version "2.4.0"
 	id("com.gradleup.shadow") version "9.4.2"
 	`maven-publish`
 }
+
+group = "dev.lyric"
+version = "1.0.0"
 
 repositories {
 	mavenCentral()
@@ -27,12 +30,15 @@ tasks {
 
 	shadowJar {
 		archiveClassifier = ""
-		archiveVersion = ""
 		minimize()
 	}
 
 	build {
 		dependsOn(shadowJar)
+	}
+
+	jar {
+		enabled = false
 	}
 
 }
