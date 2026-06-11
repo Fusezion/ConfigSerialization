@@ -13,7 +13,7 @@ plugins {
 repositories {
   mavenCentral()
   maven("https://repo.papermc.io/repository/maven-public/")
-  maven { url 'https://jitpack.io' }
+  maven("https://jitpack.io")
 }
 
 dependencies {
