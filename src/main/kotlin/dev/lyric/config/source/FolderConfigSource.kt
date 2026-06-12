@@ -24,8 +24,14 @@ class FolderConfigSource<T : Any>(
 		return children[key]
 	}
 
+	fun requireChild(key: String): T {
+		return children[key]!!
+	}
+
 	fun setChild(key: String, value: T) {
 		children[key] = value
 	}
+
+	fun hasChild(key: String): Boolean = children.containsKey(key)
 
 }
