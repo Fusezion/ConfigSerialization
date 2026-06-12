@@ -111,12 +111,12 @@ class ConfigManager(private val plugin: JavaPlugin) {
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	inline fun <reified T : ConfigSource> getFolderSource(identifier: String): FolderConfigSource<T>? {
+	inline fun <reified T : Any> getFolderSource(identifier: String): FolderConfigSource<T>? {
 		return get(identifier) as? FolderConfigSource<T>
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	inline fun <reified T : ConfigSource> getFileSource(identifier: String): FileConfigSource<T>? {
+	inline fun <reified T : Any> getFileSource(identifier: String): FileConfigSource<T>? {
 		return get(identifier) as? FileConfigSource<T>
 	}
 
