@@ -1,6 +1,7 @@
 plugins {
 	kotlin("jvm") version "2.4.0"
 	kotlin("plugin.serialization") version "2.4.0"
+	`maven-publish`
 }
 
 group = "dev.lyric"
@@ -22,4 +23,17 @@ kotlin {
 
 java {
 	withSourcesJar()
+	withJavadocJar() // optional but recommended for IDE compatibility
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			groupId = "com.github.Fusezion"
+			artifactId = project.name
+			version = project.version.toString()
+
+			from(components["java"])
+		}
+	}
 }
