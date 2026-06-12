@@ -94,21 +94,29 @@ class ConfigManager(private val plugin: JavaPlugin) {
 		return sources[identifier]
 	}
 
+	inline fun <reified T : Any> requireFile(identifier: String): T {
+		return getFile(identifier) ?: error("File config $identifier does not exist")
+	}
+
+	inline fun <reified T : Any> requireFolder(identifier: String, child: String): T {
+		return getFolder(identifier, child) ?: error("Folder config $identifier with child $child does not exist")
+	}
+
 	inline fun <reified T : Any> getFile(identifier: String): T? {
 		return (get(identifier) as? FileConfigSource<*>)?.data as? T
 	}
 
-	inline fun <reified T : ConfigSource> getFolder(identifier: String, child: String): T? {
+	inline fun <reified T : Any> getFolder(identifier: String, child: String): T? {
 		return (get(identifier) as? FolderConfigSource<*>)?.getChild(child) as? T
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	inline fun <reified T : Any> getFolderSource(identifier: String): FolderConfigSource<T>? {
+	inline fun <reified T : ConfigSource> getFolderSource(identifier: String): FolderConfigSource<T>? {
 		return get(identifier) as? FolderConfigSource<T>
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	inline fun <reified T : Any> getFileSource(identifier: String): FileConfigSource<T>? {
+	inline fun <reified T : ConfigSource> getFileSource(identifier: String): FileConfigSource<T>? {
 		return get(identifier) as? FileConfigSource<T>
 	}
 
