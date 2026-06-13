@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "dev.lyric"
-version = "1.0.0"
+version = "1.1.2"
 
 repositories {
 	mavenCentral()
@@ -23,7 +23,7 @@ kotlin {
 
 java {
 	withSourcesJar()
-	withJavadocJar() // optional but recommended for IDE compatibility
+	withJavadocJar()
 }
 
 publishing {
