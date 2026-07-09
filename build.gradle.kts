@@ -14,7 +14,9 @@ repositories {
 
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-	compileOnly("net.mamoe.yamlkt:yamlkt:0.13.0")
+	compileOnly("io.heapy.kotaml:kotaml:0.110.0")
+	testImplementation("io.heapy.kotaml:kotaml:0.110.0")
+	testImplementation(kotlin("test"))
 }
 
 kotlin {

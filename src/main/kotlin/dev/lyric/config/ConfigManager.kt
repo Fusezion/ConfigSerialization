@@ -1,13 +1,23 @@
 package dev.lyric.config
 
+import com.charleskorn.kaml.PolymorphismStyle
+import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import dev.lyric.config.source.ConfigSource
 import dev.lyric.config.source.FileConfigSource
 import dev.lyric.config.source.FolderConfigSource
-import net.mamoe.yamlkt.Yaml
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
-class ConfigManager(private val plugin: JavaPlugin) {
+class ConfigManager(
+	private val plugin: JavaPlugin,
+	private val yaml: Yaml = Yaml(
+		configuration = YamlConfiguration(
+			polymorphismStyle = PolymorphismStyle.Property,
+			polymorphismPropertyName = "type"
+		)
+	)
+) {
 
 	private val sources = mutableMapOf<String, ConfigSource>()
 
@@ -37,7 +47,7 @@ class ConfigManager(private val plugin: JavaPlugin) {
 			plugin.saveResource(source.file.invariantSeparatorsPath, false)
 		}
 
-		source.data = Yaml.decodeFromString(source.serializer, file.readText())
+		source.data = yaml.decodeFromString(source.serializer, file.readText())
 
 	}
 
@@ -60,7 +70,7 @@ class ConfigManager(private val plugin: JavaPlugin) {
 			.filter { it.isFile && it.extension == "yml" }
 			.forEach { file ->
 				val key = file.relativeTo(folder).invariantSeparatorsPath.removeSuffix(".yml")
-				source.children[key] = Yaml.decodeFromString(source.serializer, file.readText())
+				source.children[key] = yaml.decodeFromString(source.serializer, file.readText())
 			}
 	}
 
@@ -76,7 +86,7 @@ class ConfigManager(private val plugin: JavaPlugin) {
 	fun <T : Any> save(source: FileConfigSource<T>) {
 		val file = File(plugin.dataFolder, source.file.path)
 		file.parentFile?.mkdirs()
-		file.writeText(Yaml.encodeToString(source.serializer, source.data))
+		file.writeText(yaml.encodeToString(source.serializer, source.data))
 	}
 
 	fun <T : Any> save(source: FolderConfigSource<T>) {
@@ -86,7 +96,7 @@ class ConfigManager(private val plugin: JavaPlugin) {
 		source.children.forEach { (key, value) ->
 			val file = File(folder, "$key.yml")
 			file.parentFile?.mkdirs()
-			file.writeText(Yaml.encodeToString(source.serializer,value))
+			file.writeText(yaml.encodeToString(source.serializer,value))
 		}
 	}
 
