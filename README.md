@@ -6,7 +6,8 @@ Firstly before creating your first config class, as this uses kotlinxserializati
 adds this project as a dependency but also includes the plugin for kotlin serialization in your project
 ```build.gradle.kts
 plugins {
-	kotlin("plugin.serialization") version "2.3.21"
+	kotlin("jvm") version "2.4.0"
+	kotlin("plugin.serialization") version "2.4.0"
 	id("com.gradleup.shadow") version "9.4.2"
 }
 
@@ -18,6 +19,7 @@ repositories {
 
 dependencies {
   implementation("com.github.Fusezion:ConfigSerialization:1.0.0")
+  implementation("io.heapy.kotaml:kotaml:0.110.0")
 }
 
 task.shadowJar {
